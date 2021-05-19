@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp">
+
+        <TextView
+            android:id="@+id/exam_title"
+            style="@style/app_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:textSize="@dimen/_22sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/exam_desc_title"
+            style="@style/app_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/exam_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="@string/description"
+            android:textSize="@dimen/_18sp"
+            android:layout_marginTop="@dimen/_10dp"
+            />
+
+        <TextView
+            android:id="@+id/exam_desc"
+            style="@style/app_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exam_desc_title"
+            />
+
+
+        <TextView
+            android:id="@+id/exam_duration"
+            style="@style/app_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:text="Duration (mins): "
+            android:textSize="@dimen/_16sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exam_desc" />
+
+        <TextView
+            android:id="@+id/exam_duration_min"
+            style="@style/app_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:text="30"
+            android:textSize="@dimen/_16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@id/exam_duration"
+            app:layout_constraintTop_toBottomOf="@id/exam_desc" />
+
+        <TextView
+            android:id="@+id/exam_total_q"
+            style="@style/app_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:text="Total No Of Questions: "
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exam_duration" />
+
+        <TextView
+            android:id="@+id/exam_total_q_c"
+            style="@style/app_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_20dp"
+            android:text="5"
+            android:textSize="@dimen/_16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/exam_total_q"
+            app:layout_constraintTop_toBottomOf="@id/exam_duration" />
+
+
+        <Button
+            android:id="@+id/startexam"
+            style="@style/app_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_30dp"
+            android:layout_marginBottom="@dimen/_20dp"
+            android:onClick="btClick"
+            android:text="@string/startexam"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
