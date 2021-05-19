@@ -1,4 +1,4 @@
-## HMS-guide-sample
+## HMS-Learning-App
 
 ## Table of Contents
 
@@ -42,7 +42,7 @@
 	
 ## Sample Code
    
-    The HMS Guide-Demo provides demonstration for following scenarios:
+    The HMS Learning app provides demonstration for following scenarios:
 
     1. Ads integration and demonstrated in Splash Activity and Play Activity.
     2. Integrated the Cloud DB and initialized in Application class. Query, add and update operations are performed using the cloud DB,
@@ -54,4 +54,4 @@
     6. Integrated few common kits like Analytics, Crash Service, APM and Push kit. 
        
 ##  License
-    HMS Guide sample is licensed under the [Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+    HMS Learning App sample is licensed under the [Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
