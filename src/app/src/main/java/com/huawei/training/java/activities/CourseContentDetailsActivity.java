@@ -27,6 +27,7 @@ import com.huawei.agconnect.cloud.database.CloudDBZoneQuery;
 import com.huawei.training.R;
 import com.huawei.training.java.adapters.CourseContentDetailsListAdapter;
 import com.huawei.training.java.database.CloudDbAction;
+import com.huawei.training.java.database.CloudDbHelper;
 import com.huawei.training.java.database.CloudDbUiCallbackListener;
 import com.huawei.training.java.database.tables.CourseContentTable;
 import com.huawei.training.databinding.ActivityCourseContentDetailsBinding;
@@ -62,6 +63,8 @@ public class CourseContentDetailsActivity extends BaseActivity
      */
     private int courseId = 0;
 
+    private CloudDbHelper cloudDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,7 @@ public class CourseContentDetailsActivity extends BaseActivity
         courseId = Integer.parseInt(
                 Objects.requireNonNull(intent.getStringExtra(Constants.COURSE_ID)));
         setToolbar(courseName);
+        cloudDbHelper=CloudDbHelper.getInstance(this.getApplicationContext());
         cloudDbHelper.addCallBackListener(this);
         AppUtils.showLoadingDialog(this);
         queryWithCourseId();

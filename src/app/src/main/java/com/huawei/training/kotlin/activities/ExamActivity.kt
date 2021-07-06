@@ -19,14 +19,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
-import androidx.databinding.DataBindingUtil
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import com.huawei.training.R
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.database.CloudDbAction
 import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
 import com.huawei.training.kotlin.database.tables.QuestionsTable
-import com.huawei.training.databinding.ActivityExamBinding
 import com.huawei.training.kotlin.models.QuestionModel
 import com.huawei.training.kotlin.utils.AppUtils
 import com.huawei.training.kotlin.utils.video.Constants
@@ -72,11 +71,21 @@ class ExamActivity : BaseActivity(), CloudDbUiCallbackListener {
      * The Course id.
      */
     private var courseId = 0
+
+    /**
+     * Gets cloud db helper.
+     *
+     * @return the cloud db helper
+     */
+    var cloudDbHelper: CloudDbHelper?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exam)
         coursename = intent.getStringExtra(Constants.COURSE_NAME)
         courseId = intent.getStringExtra(Constants.COURSE_ID)?.toInt()!!
+
+        cloudDbHelper= CloudDbHelper.getInstance(applicationContext)
         cloudDbHelper?.addCallBackListener(this)
         setToolbar(resources.getString(R.string.exam))
         init()
@@ -93,7 +102,7 @@ class ExamActivity : BaseActivity(), CloudDbUiCallbackListener {
                 showToast(getString(R.string.select_ans))
             }
             if (answer != null) {
-                if (currentQuestionModel?.question == answer.text) {
+                if (currentQuestionModel?.answer == answer.text) {
                     score++
                 } else {
                     wrong++

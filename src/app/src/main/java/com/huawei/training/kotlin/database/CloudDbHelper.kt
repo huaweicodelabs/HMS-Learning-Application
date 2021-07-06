@@ -1,18 +1,27 @@
-package com.huawei.training.database
+package com.huawei.training.kotlin.database
 
 import android.content.Context
+import android.util.Log
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB
 import com.huawei.agconnect.cloud.database.CloudDBZone
 import com.huawei.agconnect.cloud.database.CloudDBZoneConfig
 import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException
-import com.huawei.training.kotlin.database.CloudDbAction
-import com.huawei.training.kotlin.database.CloudDbConstants
-import com.huawei.training.kotlin.database.CloudDbQueyCalls
-import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
 import com.huawei.training.kotlin.database.ObjectTypeInfoHelper.objectTypeInfo
 
-open class CloudDbHelper(val mContext: Context) {
+open class CloudDbHelper(val mContext:Context) {
 
+    companion object {
+
+        @Volatile private var INSTANCE: CloudDbHelper? = null
+
+        fun getInstance(context: Context): CloudDbHelper =
+                INSTANCE ?: synchronized(this) {
+                    INSTANCE ?: buildCloudDatabase(context).also { INSTANCE = it }
+                }
+
+        private fun buildCloudDatabase(context: Context) = CloudDbHelper(context)
+
+    }
     var mCloudDB: AGConnectCloudDB
     private var mCloudDBZone: CloudDBZone? = null
     private var mConfig: CloudDBZoneConfig? = null
@@ -22,6 +31,7 @@ open class CloudDbHelper(val mContext: Context) {
      * The Cloud db ui callback listener.
      */
     var cloudDbUiCallbackListener: CloudDbUiCallbackListener? = null
+
 
     init {
         initAGConnectCloudDB(mContext)
@@ -88,7 +98,7 @@ open class CloudDbHelper(val mContext: Context) {
      *
      * @return cloud db quey calls
      */
-    fun getCloudDbAllQueyCalls(): CloudDbQueyCalls? {
+    open fun getCloudDbAllQueyCalls(): CloudDbQueyCalls? {
         if (cloudDbQueyCalls != null) {
             cloudDbQueyCalls?.addCloudDbUiCallbackListener(cloudDbUiCallbackListener)
         }

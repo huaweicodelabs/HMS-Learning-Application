@@ -26,6 +26,7 @@ import com.huawei.agconnect.cloud.database.CloudDBZoneObject;
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery;
 import com.huawei.training.R;
 import com.huawei.training.java.database.CloudDbAction;
+import com.huawei.training.java.database.CloudDbHelper;
 import com.huawei.training.java.database.CloudDbUiCallbackListener;
 import com.huawei.training.java.database.tables.QuestionsTable;
 import com.huawei.training.databinding.ActivityExamBinding;
@@ -77,6 +78,7 @@ public class ExamActivity extends BaseActivity implements CloudDbUiCallbackListe
      * The Course id.
      */
     private int courseId = 0;
+    private CloudDbHelper cloudDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +87,9 @@ public class ExamActivity extends BaseActivity implements CloudDbUiCallbackListe
         coursename = getIntent().getStringExtra(Constants.COURSE_NAME);
         courseId = Integer.parseInt(Objects.requireNonNull(
                 getIntent().getStringExtra(Constants.COURSE_ID)));
-        cloudDbHelper.addCallBackListener(this);
         setToolbar(getResources().getString(R.string.exam));
+        cloudDbHelper=CloudDbHelper.getInstance(getApplicationContext());
+        cloudDbHelper.addCallBackListener(this);
         init();
     }
 

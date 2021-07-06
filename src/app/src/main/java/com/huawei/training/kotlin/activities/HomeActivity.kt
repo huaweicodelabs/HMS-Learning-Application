@@ -23,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import com.huawei.training.R
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.database.CloudDbAction
 import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
 import com.huawei.training.kotlin.database.tables.CourseDetailsTable
@@ -61,6 +62,13 @@ class HomeActivity : BaseActivity(), CloudDbUiCallbackListener {
     var recentlyViewedCoursesArrayList: List<RecentlyViewedCoursesTable> = ArrayList()
 
     /**
+     * Gets cloud db helper.
+     *
+     * @return the cloud db helper
+     */
+    var cloudDbHelper: CloudDbHelper?=null
+
+    /**
      * The Binding.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +96,7 @@ class HomeActivity : BaseActivity(), CloudDbUiCallbackListener {
      * Fetching data from Cloud DB
      */
     private fun fetchDataFromDB() {
+        cloudDbHelper= CloudDbHelper.getInstance(applicationContext)
         cloudDbHelper?.addCallBackListener(this)
         cloudDbHelper?.getCloudDbAllQueyCalls()?.queryAllMainCategories(
                 CloudDbAction.GET_MAIN_CATEGORIES)

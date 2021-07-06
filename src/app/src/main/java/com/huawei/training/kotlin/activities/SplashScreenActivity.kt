@@ -30,6 +30,7 @@ import com.huawei.hms.ads.HwAds
 import com.huawei.hms.ads.splash.SplashAdDisplayListener
 import com.huawei.hms.ads.splash.SplashView.SplashAdLoadListener
 import com.huawei.training.R
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.database.CloudDbAction
 import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
 import com.huawei.training.kotlin.database.tables.UsersInfoTable
@@ -65,6 +66,9 @@ class SplashScreenActivity : BaseActivity(), CloudDbUiCallbackListener {
      */
     var isDbLoggedIn = false
 
+    var cloudDbHelper: CloudDbHelper?=null
+
+
     // Callback handler used when the ad display timeout message is received.
     private val timeoutHandler = Handler(
             Handler.Callback { msg: Message? ->
@@ -94,6 +98,7 @@ class SplashScreenActivity : BaseActivity(), CloudDbUiCallbackListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
         HwAds.init(this)
         utils = AppUtils(this@SplashScreenActivity)
+        cloudDbHelper= CloudDbHelper.getInstance(applicationContext)
         cloudDbHelper?.addCallBackListener(this)
         cloudDbHelper?.getCloudDbAllQueyCalls()?.login(this, CloudDbAction.DB_LOGIN)
     }

@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,10 +64,7 @@ public class LearningApplication extends Application
      * The App analytics.
      */
     AppAnalytics appAnalytics;
-    /**
-     * The Cloud db helper.
-     */
-    CloudDbHelper cloudDbHelper;
+    
 
     @Override
     public void onCreate() {
@@ -76,6 +74,7 @@ public class LearningApplication extends Application
         initPlayer();
         myReceiver = new NetworkReceiver(this);
         registerActivityLifecycleCallbacks(LearningApplication.this);
+
     }
 
     @Override
@@ -85,7 +84,6 @@ public class LearningApplication extends Application
 
     private void init() {
         appAnalytics = new AppAnalytics(this);
-        cloudDbHelper = CloudDbHelper.getInstance(this);
     }
 
     /**
@@ -132,14 +130,7 @@ public class LearningApplication extends Application
     public void setUserStatus() {
     }
 
-    /**
-     * Gets cloud db helper.
-     *
-     * @return the cloud db helper
-     */
-    public CloudDbHelper getCloudDbHelper() {
-        return cloudDbHelper;
-    }
+    
 
     /**
      * get the user details

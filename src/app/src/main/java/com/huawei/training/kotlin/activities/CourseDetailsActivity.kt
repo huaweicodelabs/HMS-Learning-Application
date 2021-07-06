@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import com.huawei.training.R
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.adapters.CourseDetailsListAdapter
 import com.huawei.training.kotlin.database.CloudDbAction
 import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
@@ -69,6 +70,14 @@ class CourseDetailsActivity : BaseActivity(), CloudDbUiCallbackListener {
      * The Recently viewed index.
      */
     private var recentlyViewedIndex = -1
+
+    /**
+     * Gets cloud db helper.
+     *
+     * @return the cloud db helper
+     */
+    var cloudDbHelper: CloudDbHelper?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_details)
@@ -83,6 +92,7 @@ class CourseDetailsActivity : BaseActivity(), CloudDbUiCallbackListener {
 
     private fun init() {
         try {
+            cloudDbHelper= CloudDbHelper.getInstance(applicationContext)
             if (cloudDbHelper != null) {
                 cloudDbHelper?.addCallBackListener(this)
             }

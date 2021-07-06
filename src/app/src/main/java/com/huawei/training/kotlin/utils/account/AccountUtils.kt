@@ -21,7 +21,7 @@ import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.result.AuthHuaweiId
-import com.huawei.training.database.CloudDbHelper
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.database.CloudDbAction
 import com.huawei.training.kotlin.database.tables.UsersInfoTable
 import com.huawei.training.kotlin.models.UserObj

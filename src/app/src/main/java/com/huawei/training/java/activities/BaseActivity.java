@@ -45,10 +45,7 @@ import java.util.Objects;
  * @since 2020
  */
 public abstract class BaseActivity extends AppCompatActivity {
-    /**
-     * The Cloud db helper.
-     */
-    public CloudDbHelper cloudDbHelper;
+
     /**
      * The App analytics.
      */
@@ -58,10 +55,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public UserObj userObj = null;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cloudDbHelper = ((LearningApplication) getApplicationContext()).getCloudDbHelper();
+
         appAnalytics = ((LearningApplication) getApplicationContext()).getAppAnalytics();
         userObj = ((LearningApplication) getApplication()).getUserObj();
     }
@@ -73,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             Task<AuthHuaweiId> authHuaweiIdTask = HuaweiIdAuthManager
                     .parseAuthResultFromIntent(data);
             if (authHuaweiIdTask.isSuccessful()) {
-                AccountUtils.setUserInfo(authHuaweiIdTask.getResult(), cloudDbHelper, this);
+                AccountUtils.setUserInfo(authHuaweiIdTask.getResult(), CloudDbHelper.getInstance(this.getApplicationContext()), this);
                 userObj = ((LearningApplication) getApplication()).getUserObj();
                 ((LearningApplication) getApplication()).setRecentlyViewedCoresRefresh(true);
                 showToast(getString(R.string.login_success));

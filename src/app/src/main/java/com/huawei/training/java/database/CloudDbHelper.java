@@ -17,6 +17,7 @@
 package com.huawei.training.java.database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB;
 import com.huawei.agconnect.cloud.database.CloudDBZone;
@@ -113,6 +114,8 @@ public class CloudDbHelper {
                                 cloudDbQueyCalls.setmCloudDBZone(mCloudDBZone);
                                 cloudDbUiCallbackListener.onSuccessDbQueryMessage(
                                         cloudDbAction, "open clouddbzone success");
+
+                                
                             }
                         })
                 .addOnFailureListener(

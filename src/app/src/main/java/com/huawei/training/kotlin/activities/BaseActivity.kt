@@ -22,7 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.huawei.hms.support.hwid.HuaweiIdAuthManager
 import com.huawei.training.R
-import com.huawei.training.database.CloudDbHelper
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.dialogs.LoginDialog
 import com.huawei.training.kotlin.models.UserObj
 import com.huawei.training.kotlin.utils.AppUtils
@@ -38,11 +38,7 @@ import java.util.*
  * @since 2020
  */
 abstract class BaseActivity : AppCompatActivity() {
-    /**
-     * The Cloud db helper.
-     */
-    @JvmField
-    var cloudDbHelper: CloudDbHelper? = null
+
 
     /**
      * The App analytics.
@@ -57,7 +53,6 @@ abstract class BaseActivity : AppCompatActivity() {
     var userObj: UserObj? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cloudDbHelper = (applicationContext as LearningApplication).cloudDbHelper
         appAnalytics = (applicationContext as LearningApplication).appAnalytics
         userObj = (application as LearningApplication).userObj
     }
@@ -68,7 +63,7 @@ abstract class BaseActivity : AppCompatActivity() {
             val authHuaweiIdTask = HuaweiIdAuthManager
                     .parseAuthResultFromIntent(data)
             if (authHuaweiIdTask.isSuccessful) {
-                cloudDbHelper?.let { AccountUtils.setUserInfo(authHuaweiIdTask.result, it, this) }
+                CloudDbHelper.getInstance(applicationContext)?.let { AccountUtils.setUserInfo(authHuaweiIdTask.result, it, this) }
                 userObj = (application as LearningApplication).userObj
                 (application as LearningApplication).isRecentlyViewedCoresRefresh = true
                 showToast(getString(R.string.login_success))

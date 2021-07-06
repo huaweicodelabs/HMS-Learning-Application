@@ -33,6 +33,7 @@ import com.huawei.hms.ads.splash.SplashAdDisplayListener;
 import com.huawei.hms.ads.splash.SplashView;
 import com.huawei.training.R;
 import com.huawei.training.java.database.CloudDbAction;
+import com.huawei.training.java.database.CloudDbHelper;
 import com.huawei.training.java.database.CloudDbUiCallbackListener;
 import com.huawei.training.java.database.tables.UsersInfoTable;
 import com.huawei.training.databinding.ActivitySplashScreenBinding;
@@ -66,6 +67,11 @@ public class SplashScreenActivity extends BaseActivity implements CloudDbUiCallb
      * The Is db logged in.
      */
     Boolean isDbLoggedIn = false;
+
+    /**
+     * The Cloud db helper.
+     */
+    CloudDbHelper cloudDbHelper;
 
     // Callback handler used when the ad display timeout message is received.
     private Handler timeoutHandler =
@@ -103,6 +109,7 @@ public class SplashScreenActivity extends BaseActivity implements CloudDbUiCallb
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
         HwAds.init(this);
         utils = new AppUtils(SplashScreenActivity.this);
+        cloudDbHelper=CloudDbHelper.getInstance(getApplicationContext());
         cloudDbHelper.addCallBackListener(this);
         cloudDbHelper.getCloudDbQueyCalls().login(this, CloudDbAction.DB_LOGIN);
 

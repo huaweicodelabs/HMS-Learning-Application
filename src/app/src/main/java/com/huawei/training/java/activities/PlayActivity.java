@@ -47,6 +47,7 @@ import com.huawei.hms.videokit.player.common.PlayerConstants.ResumeType;
 import com.huawei.training.R;
 import com.huawei.training.java.adapters.TabsPagerAdapter;
 import com.huawei.training.java.database.CloudDbAction;
+import com.huawei.training.java.database.CloudDbHelper;
 import com.huawei.training.java.database.CloudDbUiCallbackListener;
 import com.huawei.training.java.database.tables.CourseContentTable;
 import com.huawei.training.java.database.tables.CourseDetailsTable;
@@ -132,6 +133,7 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
      * The Course id.
      */
     private int courseId = 0;
+    private CloudDbHelper cloudDbHelper;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -148,6 +150,7 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
         if(courseName!=null){
             setToolbar(courseName);
         }
+        cloudDbHelper=CloudDbHelper.getInstance(getApplicationContext());
         cloudDbHelper.addCallBackListener(this);
         initView();
         loadInterstitialAd();
@@ -815,7 +818,7 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
 
     @Override
     public void onReady(final WisePlayer wisePlayer) {
-        playControl.start();
+        wisePlayer.start();
         isPlaying = true;
         runOnUiThread(
                 () -> {
@@ -824,8 +827,7 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
                         playView.setPauseView();
                     }
                     playView.setContentView(wisePlayer, playControl.getCurrentPlayName());
-                    updateViewHandler.sendEmptyMessageDelayed(
-                            Constants.PLAYING_WHAT, Constants.DELAY_MILLIS_500);
+
                 });
     }
 
@@ -852,6 +854,18 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
                         showToast("Player initialisation failed");
                     } else {
                         playControl.ready();
+                        if (hasSurfaceCreated) {
+                            if (PlayControlUtil.isSurfaceView()) {
+                                playControl.setSurfaceView(playView.getSurfaceView());
+                            } else {
+                                playControl.setTextureView(playView.getTextureView());
+                            }
+                            isSuspend = false;
+                            playControl.playResume(ResumeType.KEEP);
+                            if (!updateViewHandler.hasMessages(Constants.PLAYING_WHAT)) {
+                                updateViewHandler.sendEmptyMessage(Constants.PLAYING_WHAT);
+                            }
+                        }
                     }
                 }
 
@@ -862,6 +876,18 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
                         showToast("Player initialisation failed");
                     } else {
                         playControl.ready();
+                        if (hasSurfaceCreated) {
+                            if (PlayControlUtil.isSurfaceView()) {
+                                playControl.setSurfaceView(playView.getSurfaceView());
+                            } else {
+                                playControl.setTextureView(playView.getTextureView());
+                            }
+                            isSuspend = false;
+                            playControl.playResume(ResumeType.KEEP);
+                            if (!updateViewHandler.hasMessages(Constants.PLAYING_WHAT)) {
+                                updateViewHandler.sendEmptyMessage(Constants.PLAYING_WHAT);
+                            }
+                        }
                     }
                 }
 
@@ -918,8 +944,10 @@ public class PlayActivity extends BaseActivity implements OnPlayWindowListener,
                 break;
             case GET_COURSE_CONTENT:
                 List<CourseContentTable> coContentList = (List) dataList;
-                this.coContent = coContentList.get(0);
-                queryCodeLabDoc();
+                if (coContentList.size() > 0){
+                    this.coContent = coContentList.get(0);
+                    queryCodeLabDoc();
+                }
                 break;
             case GET_COURSE_DOC:
                 break;

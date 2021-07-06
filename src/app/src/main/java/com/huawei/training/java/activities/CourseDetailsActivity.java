@@ -27,6 +27,7 @@ import com.huawei.agconnect.cloud.database.CloudDBZoneQuery;
 import com.huawei.training.R;
 import com.huawei.training.java.adapters.CourseDetailsListAdapter;
 import com.huawei.training.java.database.CloudDbAction;
+import com.huawei.training.java.database.CloudDbHelper;
 import com.huawei.training.java.database.CloudDbUiCallbackListener;
 import com.huawei.training.java.database.tables.CourseDetailsTable;
 import com.huawei.training.java.database.tables.CoursePlatformTable;
@@ -78,6 +79,8 @@ public class CourseDetailsActivity extends BaseActivity implements CloudDbUiCall
      */
     private int recentlyViewedIndex = -1;
 
+    private CloudDbHelper cloudDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,7 @@ public class CourseDetailsActivity extends BaseActivity implements CloudDbUiCall
                 intent.getStringExtra(Constants.COURSE_ID)));
         ((LearningApplication) getApplication()).setRecentlyViewedCoresRefresh(false);
         setToolbar(coursename);
+        cloudDbHelper=CloudDbHelper.getInstance(this.getApplicationContext());
         init();
     }
 

@@ -30,6 +30,7 @@ import com.huawei.agconnect.cloud.database.CloudDBZoneObject;
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery;
 import com.huawei.training.R;
 import com.huawei.training.java.database.CloudDbAction;
+import com.huawei.training.java.database.CloudDbHelper;
 import com.huawei.training.java.database.CloudDbUiCallbackListener;
 import com.huawei.training.java.database.tables.CourseDetailsTable;
 import com.huawei.training.java.database.tables.CoursesMainCategoryTable;
@@ -66,6 +67,7 @@ public class HomeActivity extends BaseActivity implements CloudDbUiCallbackListe
      * The Binding.
      */
     ActivityHomeBinding binding;
+    private CloudDbHelper cloudDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class HomeActivity extends BaseActivity implements CloudDbUiCallbackListe
         openFragment(HomeFragment.newInstance());
         mainCategoryList = new ArrayList<>();
         AppUtils.showLoadingDialog(this);
+        cloudDbHelper=CloudDbHelper.getInstance(this.getApplicationContext());
         fetchDataFromDB();
     }
 

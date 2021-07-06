@@ -25,14 +25,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.huawei.agconnect.cloud.database.CloudDBZoneObject
 import com.huawei.agconnect.cloud.database.CloudDBZoneQuery
 import com.huawei.training.R
-import com.huawei.training.database.CloudDbHelper
+import com.huawei.training.databinding.FragmentMyCoursesBinding
 import com.huawei.training.kotlin.activities.BaseActivity
 import com.huawei.training.kotlin.activities.PlayActivity
 import com.huawei.training.kotlin.adapters.MyCourseListAdapter
 import com.huawei.training.kotlin.database.CloudDbAction
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
 import com.huawei.training.kotlin.database.tables.MyCoursesTable
-import com.huawei.training.databinding.FragmentMyCoursesBinding
 import com.huawei.training.kotlin.listeners.CourseItemClick
 import com.huawei.training.kotlin.models.CourseDataModel
 import com.huawei.training.kotlin.models.UserObj
@@ -79,7 +79,7 @@ class MyCoursesFragment
         super.onCreate(savedInstanceState)
         userObj = (Objects.requireNonNull(
                 activity)?.application as LearningApplication).userObj
-        cloudDbHelper = (activity as BaseActivity?)!!.cloudDbHelper
+        cloudDbHelper = CloudDbHelper.getInstance(activity!!.applicationContext)
         appAnalytics = (activity as BaseActivity?)!!.appAnalytics
     }
 
@@ -95,11 +95,12 @@ class MyCoursesFragment
     private fun queryMyCourses() {
         if (userObj != null) {
             if (userObj?.getuId() != null) {
-                val cloudDBZoneQuery: CloudDBZoneQuery<*> = CloudDBZoneQuery.where(MyCoursesTable::class.java)
+                val cloudDBZoneQuery: CloudDBZoneQuery<MyCoursesTable> = CloudDBZoneQuery.where(MyCoursesTable::class.java)
                 cloudDBZoneQuery.equalTo("userId", userObj?.getuId())
-                (Objects.requireNonNull(activity) as BaseActivity).cloudDbHelper
-                        ?.getCloudDbAllQueyCalls()
-                        ?.queryMyCoursesTable(cloudDBZoneQuery as CloudDBZoneQuery<MyCoursesTable>?, CloudDbAction.GET_MY_COURSES)
+                if (cloudDbHelper != null) {
+                    cloudDbHelper?.getCloudDbAllQueyCalls()?.queryMyCoursesTable(cloudDBZoneQuery, CloudDbAction.GET_MY_COURSES)
+                }
+
             }
         }
     }

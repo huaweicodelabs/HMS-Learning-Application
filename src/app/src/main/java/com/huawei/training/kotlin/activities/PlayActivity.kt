@@ -46,6 +46,7 @@ import com.huawei.hms.videokit.player.common.PlayerConstants.*
 import com.huawei.training.R
 import com.huawei.training.kotlin.adapters.TabsPagerAdapter
 import com.huawei.training.kotlin.database.CloudDbAction
+import com.huawei.training.kotlin.database.CloudDbHelper
 import com.huawei.training.kotlin.database.CloudDbUiCallbackListener
 import com.huawei.training.kotlin.database.tables.CourseContentTable
 import com.huawei.training.kotlin.database.tables.CourseDetailsTable
@@ -139,6 +140,13 @@ class PlayActivity : BaseActivity(), OnPlayWindowListener, OnWisePlayerListener,
      */
     private var courseId = 0
 
+    /**
+     * Gets cloud db helper.
+     *
+     * @return the cloud db helper
+     */
+    var cloudDbHelper: CloudDbHelper?=null
+
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,6 +157,7 @@ class PlayActivity : BaseActivity(), OnPlayWindowListener, OnWisePlayerListener,
         val courseName = intent.getStringExtra(Constants.COURSE_NAME)
         courseId = intent.getStringExtra(Constants.COURSE_ID)?.toInt()!!
         courseName?.let { setToolbar(it) }
+        cloudDbHelper= CloudDbHelper.getInstance(applicationContext)
         cloudDbHelper?.addCallBackListener(this)
         initView()
         loadInterstitialAd()
@@ -746,7 +755,7 @@ class PlayActivity : BaseActivity(), OnPlayWindowListener, OnWisePlayerListener,
     }
 
     override fun onReady(wisePlayer: WisePlayer) {
-        playControl?.start()
+        wisePlayer?.start()
         isPlaying = true
         runOnUiThread {
             playView?.updatePlayView(wisePlayer)
@@ -754,8 +763,6 @@ class PlayActivity : BaseActivity(), OnPlayWindowListener, OnWisePlayerListener,
                 playView?.setPauseView()
             }
             playView?.setContentView(wisePlayer, playControl?.currentPlayName)
-            updateViewHandler?.sendEmptyMessageDelayed(
-                    Constants.PLAYING_WHAT, Constants.DELAY_MILLIS_500)
         }
     }
 
@@ -775,6 +782,18 @@ class PlayActivity : BaseActivity(), OnPlayWindowListener, OnWisePlayerListener,
                 showToast("Player initialisation failed")
             } else {
                 playControl?.ready()
+                if (hasSurfaceCreated) {
+                    if (isSurfaceView) {
+                        playControl!!.setSurfaceView(playView?.surfaceView)
+                    } else {
+                        playControl!!.setTextureView(playView?.textureView)
+                    }
+                    isSuspend = false
+                    playControl!!.playResume(ResumeType.KEEP)
+                    if (!updateViewHandler!!.hasMessages(Constants.PLAYING_WHAT)) {
+                        updateViewHandler!!.sendEmptyMessage(Constants.PLAYING_WHAT)
+                    }
+                }
             }
         }
 
@@ -784,6 +803,18 @@ class PlayActivity : BaseActivity(), OnPlayWindowListener, OnWisePlayerListener,
                 showToast("Player initialisation failed")
             } else {
                 playControl?.ready()
+                if (hasSurfaceCreated) {
+                    if (isSurfaceView) {
+                        playControl!!.setSurfaceView(playView?.surfaceView)
+                    } else {
+                        playControl!!.setTextureView(playView?.textureView)
+                    }
+                    isSuspend = false
+                    playControl!!.playResume(ResumeType.KEEP)
+                    if (!updateViewHandler!!.hasMessages(Constants.PLAYING_WHAT)) {
+                        updateViewHandler!!.sendEmptyMessage(Constants.PLAYING_WHAT)
+                    }
+                }
             }
         }
 

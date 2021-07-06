@@ -99,7 +99,7 @@ public class MyCoursesFragment extends Fragment implements CloudDbUiCallbackList
         super.onCreate(savedInstanceState);
         userObj = ((LearningApplication) Objects.requireNonNull(
                 getActivity()).getApplication()).getUserObj();
-        cloudDbHelper = ((BaseActivity) getActivity()).cloudDbHelper;
+        cloudDbHelper = CloudDbHelper.getInstance(getActivity().getApplicationContext());
         appAnalytics = ((BaseActivity) getActivity()).appAnalytics;
     }
 
@@ -118,10 +118,10 @@ public class MyCoursesFragment extends Fragment implements CloudDbUiCallbackList
             if (userObj.getuId() != null) {
                 CloudDBZoneQuery cloudDBZoneQuery = CloudDBZoneQuery.where(MyCoursesTable.class);
                 cloudDBZoneQuery.equalTo("userId", userObj.getuId());
-                ((BaseActivity) Objects.requireNonNull(getActivity()))
-                        .cloudDbHelper
-                        .getCloudDbQueyCalls()
-                        .queryMyCoursesTable(cloudDBZoneQuery, CloudDbAction.GET_MY_COURSES);
+                if(cloudDbHelper != null){
+                    cloudDbHelper.getCloudDbQueyCalls()
+                            .queryMyCoursesTable(cloudDBZoneQuery, CloudDbAction.GET_MY_COURSES);
+                }
             }
         }
     }

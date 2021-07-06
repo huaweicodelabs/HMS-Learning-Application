@@ -23,13 +23,13 @@ import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import com.huawei.agconnect.apms.APMS
 import com.huawei.agconnect.crash.AGConnectCrash
 import com.huawei.hms.ads.HwAds
 import com.huawei.hms.videokit.player.InitFactoryCallback
 import com.huawei.hms.videokit.player.WisePlayerFactory
 import com.huawei.hms.videokit.player.WisePlayerFactoryOptions
-import com.huawei.training.database.CloudDbHelper
 import com.huawei.training.kotlin.models.UserObj
 import com.huawei.training.kotlin.utils.eventmanager.AppAnalytics
 import com.huawei.training.kotlin.utils.network.NetworkConnectionCallbacks
@@ -90,15 +90,9 @@ class LearningApplication : Application(), ActivityLifecycleCallbacks, NetworkCo
      */
     var appAnalytics: AppAnalytics? = null
 
-    /**
-     * Gets cloud db helper.
-     *
-     * @return the cloud db helper
-     */
-    /**
-     * The Cloud db helper.
-     */
-    var cloudDbHelper: CloudDbHelper? = null
+
+
+
     override fun onCreate() {
         super.onCreate()
         init()
@@ -106,6 +100,7 @@ class LearningApplication : Application(), ActivityLifecycleCallbacks, NetworkCo
         initPlayer()
         myReceiver = NetworkReceiver(this)
         registerActivityLifecycleCallbacks(this@LearningApplication)
+
     }
 
     override fun onTerminate() {
@@ -114,7 +109,6 @@ class LearningApplication : Application(), ActivityLifecycleCallbacks, NetworkCo
 
     private fun init() {
         appAnalytics = AppAnalytics(this)
-        cloudDbHelper = CloudDbHelper(this)
     }
 
     /**
@@ -175,9 +169,11 @@ class LearningApplication : Application(), ActivityLifecycleCallbacks, NetworkCo
         private val initFactoryCallback: InitFactoryCallback = object : InitFactoryCallback {
             override fun onSuccess(wisePlayerFactory: WisePlayerFactory) {
                 setWisePlayerFactory(wisePlayerFactory)
+
             }
 
-            override fun onFailure(errorCode: Int, reason: String) {}
+            override fun onFailure(errorCode: Int, reason: String) {
+            }
         }
 
         private fun setWisePlayerFactory(wisePlayerFactory: WisePlayerFactory) {
